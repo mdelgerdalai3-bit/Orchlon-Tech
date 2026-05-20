@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бүтээгдэхүүн — Orchlon TechSupply</title>
+<link rel="icon" href="images/logo.jpg">
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  (function() {
+    var t = localStorage.getItem('orchlon_theme')
+      || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  })();
+</script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <span>🇺🇸 Америкаас шууд хямд, чанартай зөөврийн Notebook</span>
+    <div class="topbar-links">
+      <a href="tel:80012722">📞 8001-2722</a>
+      <a href="https://www.facebook.com/orchlontechpage" target="_blank">Facebook</a>
+      <a href="#">Тусламж</a>
+    </div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container header-inner">
+    <button class="hamburger" onclick="toggleDrawer(true)" aria-label="Цэс">☰</button>
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="Orchlon TechSupply" class="logo-img">
+      <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="products.html?cat=laptop">Notebook</a>
+      <a href="products.html?cat=gaming">Гэйминг</a>
+      <a href="products.html?cat=desktop">Суурин</a>
+      <a href="products.html?cat=parts">Эд анги</a>
+      <a href="products.html?cat=accessories">Дагалдах</a>
+      <a href="products.html">Бүх бүтээгдэхүүн</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search">
+        <input type="text" id="searchInput" placeholder="Бүтээгдэхүүн хайх…">
+        <button>🔍</button>
+      </div>
+      <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Theme">
+        <span class="sun">☀️</span><span class="moon">🌙</span>
+      </button>
+      <a href="#" class="icon-btn" title="Хадгалсан">♡</a>
+      <a href="cart.html" class="icon-btn cart-btn" title="Сагс">
+        🛒 <span class="cart-count" id="cartCount">0</span>
+      </a>
+      <a href="#" class="btn btn-ghost">Нэвтрэх</a>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="Orchlon" class="logo-img">
+      <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+    </a>
+    <button class="drawer-close" onclick="toggleDrawer(false)">✕</button>
+  </div>
+  <div class="drawer-search">
+    <div class="search">
+      <input type="text" id="searchInputMobile" placeholder="Хайх…">
+      <button>🔍</button>
+    </div>
+  </div>
+  <nav class="drawer-nav">
+    <a href="products.html?cat=laptop">💻 Notebook</a>
+    <a href="products.html?cat=gaming">🎮 Гэйминг</a>
+    <a href="products.html?cat=desktop">🖥️ Суурин</a>
+    <a href="products.html?cat=parts">🔩 Эд анги</a>
+    <a href="products.html?cat=accessories">⌨️ Дагалдах</a>
+    <a href="products.html">📋 Бүх бүтээгдэхүүн</a>
+    <a href="cart.html">🛒 Сагс</a>
+  </nav>
+  <div class="drawer-foot">
+    <a href="tel:80012722">📞 8001-2722</a>
+    <a href="https://www.facebook.com/orchlontechpage" target="_blank">📘 Facebook</a>
+  </div>
+</aside>
+
+<div class="crumbs">
+  <div class="container">
+    <a href="index.html">Нүүр</a> / <span id="crumbCat">Бүх бүтээгдэхүүн</span>
+  </div>
+</div>
+
+<section class="section listing">
+  <div class="container listing-grid">
+
+    <aside class="filters">
+      <h3>Шүүлтүүр</h3>
+
+      <div class="filter-block">
+        <h4>Ангилал</h4>
+        <label><input type="radio" name="cat" value="all" checked> Бүгд</label>
+        <label><input type="radio" name="cat" value="laptop"> Notebook</label>
+        <label><input type="radio" name="cat" value="desktop"> Суурин</label>
+        <label><input type="radio" name="cat" value="gaming"> Гэйминг</label>
+        <label><input type="radio" name="cat" value="parts"> Эд анги</label>
+        <label><input type="radio" name="cat" value="accessories"> Дагалдах</label>
+      </div>
+
+      <div class="filter-block">
+        <h4>Брэнд</h4>
+        <label><input type="checkbox" class="brand" value="Apple"> Apple</label>
+        <label><input type="checkbox" class="brand" value="ASUS"> ASUS</label>
+        <label><input type="checkbox" class="brand" value="Lenovo"> Lenovo</label>
+        <label><input type="checkbox" class="brand" value="Dell"> Dell</label>
+        <label><input type="checkbox" class="brand" value="HP"> HP</label>
+        <label><input type="checkbox" class="brand" value="MSI"> MSI</label>
+        <label><input type="checkbox" class="brand" value="Razer"> Razer</label>
+        <label><input type="checkbox" class="brand" value="Acer"> Acer</label>
+      </div>
+
+      <div class="filter-block">
+        <h4>Үнэ (₮)</h4>
+        <div class="price-row">
+          <input type="number" id="minPrice" placeholder="мин">
+          <input type="number" id="maxPrice" placeholder="макс">
+        </div>
+        <input type="range" id="priceRange" min="0" max="15000000" step="100000" value="15000000">
+        <small id="priceLabel">0 — 15,000,000₮</small>
+      </div>
+
+      <div class="filter-block">
+        <h4>RAM</h4>
+        <label><input type="checkbox" class="ram" value="8"> 8 GB</label>
+        <label><input type="checkbox" class="ram" value="16"> 16 GB</label>
+        <label><input type="checkbox" class="ram" value="32"> 32 GB</label>
+        <label><input type="checkbox" class="ram" value="64"> 64 GB</label>
+      </div>
+
+      <button class="btn btn-ghost" id="resetFilters">Шүүлтүүр цэвэрлэх</button>
+    </aside>
+
+    <div class="listing-main">
+      <div class="listing-head">
+        <p id="resultCount">0 бүтээгдэхүүн</p>
+        <div class="listing-controls">
+          <label>Эрэмбэлэх:
+            <select id="sortBy">
+              <option value="popular">Алдартай</option>
+              <option value="price-asc">Үнэ ↑</option>
+              <option value="price-desc">Үнэ ↓</option>
+              <option value="rating">Үнэлгээ</option>
+              <option value="new">Шинэ</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="product-grid" id="listingGrid"></div>
+
+      <div class="pagination">
+        <button>‹</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>›</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <div class="logo">
+        <img src="images/logo.jpg" alt="Orchlon TechSupply" class="logo-img">
+        <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+      </div>
+      <p class="mt-12">Америкаас шууд импортолсон хямд чанартай Notebook.</p>
+      <div class="socials">
+        <a href="https://www.facebook.com/orchlontechpage" target="_blank">f</a>
+        <a href="#">in</a><a href="#">yt</a><a href="#">ig</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Бүтээгдэхүүн</h5>
+      <a href="products.html?cat=laptop">Notebook</a>
+      <a href="products.html?cat=gaming">Гэйминг</a>
+      <a href="products.html?cat=parts">Эд анги</a>
+    </div>
+    <div class="footer-col">
+      <h5>Тусламж</h5>
+      <a href="#">Хүргэлт</a><a href="#">Буцаалт</a><a href="#">Засвар</a>
+    </div>
+    <div class="footer-col">
+      <h5>Холбоо</h5>
+      <p>📞 <a href="tel:80012722">8001-2722</a><br>
+      <a href="https://www.facebook.com/orchlontechpage" target="_blank">Facebook хуудас</a></p>
+    </div>
+  </div>
+  <div class="footer-bot"><div class="container">© 2026 Orchlon TechSupply LLC.</div></div>
+</footer>
+
+<div class="float-contacts">
+  <a href="tel:80012722" class="fc-btn fc-phone">📞</a>
+  <a href="https://m.me/orchlontechpage" target="_blank" class="fc-btn fc-fb">💬</a>
+</div>
+
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>initListing();</script>
+</body>
+</html>

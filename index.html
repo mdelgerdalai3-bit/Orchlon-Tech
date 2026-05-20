@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orchlon TechSupply — Америкаас хямд, чанартай Notebook</title>
+<link rel="icon" href="images/logo.jpg">
+<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  (function() {
+    var t = localStorage.getItem('orchlon_theme')
+      || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  })();
+</script>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <span>🇺🇸 Америкаас шууд хямд, чанартай зөөврийн Notebook</span>
+    <div class="topbar-links">
+      <a href="tel:80012722">📞 8001-2722</a>
+      <a href="https://www.facebook.com/orchlontechpage" target="_blank">Facebook</a>
+      <a href="#">Тусламж</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header / Nav -->
+<header class="header">
+  <div class="container header-inner">
+    <button class="hamburger" onclick="toggleDrawer(true)" aria-label="Цэс">☰</button>
+
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="Orchlon TechSupply" class="logo-img">
+      <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+    </a>
+
+    <nav class="main-nav">
+      <a href="products.html?cat=laptop">Notebook</a>
+      <a href="products.html?cat=gaming">Гэйминг</a>
+      <a href="products.html?cat=desktop">Суурин</a>
+      <a href="products.html?cat=parts">Эд анги</a>
+      <a href="products.html?cat=accessories">Дагалдах</a>
+      <a href="products.html">Бүх бүтээгдэхүүн</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="search">
+        <input type="text" id="searchInput" placeholder="Бүтээгдэхүүн хайх…">
+        <button>🔍</button>
+      </div>
+      <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Theme">
+        <span class="sun">☀️</span><span class="moon">🌙</span>
+      </button>
+      <a href="#" class="icon-btn" title="Хадгалсан">♡</a>
+      <a href="cart.html" class="icon-btn cart-btn" title="Сагс">
+        🛒 <span class="cart-count" id="cartCount">0</span>
+      </a>
+      <a href="#" class="btn btn-ghost">Нэвтрэх</a>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="Orchlon" class="logo-img">
+      <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+    </a>
+    <button class="drawer-close" onclick="toggleDrawer(false)">✕</button>
+  </div>
+  <div class="drawer-search">
+    <div class="search">
+      <input type="text" id="searchInputMobile" placeholder="Хайх…">
+      <button>🔍</button>
+    </div>
+  </div>
+  <nav class="drawer-nav">
+    <a href="products.html?cat=laptop">💻 Notebook</a>
+    <a href="products.html?cat=gaming">🎮 Гэйминг</a>
+    <a href="products.html?cat=desktop">🖥️ Суурин</a>
+    <a href="products.html?cat=parts">🔩 Эд анги</a>
+    <a href="products.html?cat=accessories">⌨️ Дагалдах</a>
+    <a href="products.html">📋 Бүх бүтээгдэхүүн</a>
+    <a href="cart.html">🛒 Сагс</a>
+  </nav>
+  <div class="drawer-foot">
+    <a href="tel:80012722">📞 8001-2722</a>
+    <a href="https://www.facebook.com/orchlontechpage" target="_blank">📘 Facebook</a>
+  </div>
+</aside>
+
+<!-- Hero banner -->
+<section class="hero-banner">
+  <div class="container">
+    <a href="products.html?cat=laptop" class="hero-banner-link">
+      <img src="images/banner.png" alt="Америкаас хямд чанартай зөөврийн Notebook">
+    </a>
+  </div>
+</section>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <span class="eyebrow">🇺🇸 Америкаас шууд</span>
+      <h1>Хямд, чанартай<br>Notebook.</h1>
+      <p>Apple, Dell, HP, Lenovo, ASUS — Америкаас шууд импортолсон албан ёсны баталгаатай зөөврийн компьютерүүд.</p>
+      <div class="hero-cta">
+        <a href="products.html" class="btn btn-primary">Дэлгүүр үзэх</a>
+        <a href="tel:80012722" class="btn btn-link">📞 8001-2722 →</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>370+</strong><span>Дагагч (Facebook)</span></div>
+        <div><strong>6 сар</strong><span>Баталгаат хугацаа</span></div>
+        <div><strong>24 цаг</strong><span>Хүргэлт</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <a href="product.html?id=1" class="hero-card hero-card-main">
+        <div class="hero-card-tag">−12%</div>
+        <img src="images/products/post2_img1.jpg" alt="Dell Latitude 7520 vPRO">
+        <div class="hero-card-info">
+          <h3>Dell Latitude 7520 vPRO</h3>
+          <p>1,700,000₮</p>
+        </div>
+      </a>
+      <a href="product.html?id=2" class="hero-card hero-card-sub">
+        <img src="images/products/post2_img2.jpg" alt="Dell Latitude 3510">
+        <div class="hero-card-info">
+          <h3>Dell Latitude 3510</h3>
+          <p>1,600,000₮</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Brand strip -->
+<section class="brand-strip">
+  <div class="container">
+    <div class="brand-row">
+      <span>Apple</span>
+      <span>ASUS</span>
+      <span>Lenovo</span>
+      <span>Dell</span>
+      <span>HP</span>
+      <span>MSI</span>
+      <span>Razer</span>
+      <span>Acer</span>
+      <span>Samsung</span>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Ангилалаар үзэх</h2>
+      <a href="products.html" class="see-all">Бүгдийг үзэх →</a>
+    </div>
+    <div class="category-grid">
+      <a href="products.html?cat=laptop" class="cat-card cat-1">
+        <div class="cat-text"><h3>Notebook</h3><p>240+ загвар</p></div>
+      </a>
+      <a href="products.html?cat=gaming" class="cat-card cat-2">
+        <div class="cat-text"><h3>Гэйминг</h3><p>180+ загвар</p></div>
+      </a>
+      <a href="products.html?cat=desktop" class="cat-card cat-3">
+        <div class="cat-text"><h3>Суурин</h3><p>95+ загвар</p></div>
+      </a>
+      <a href="products.html?cat=parts" class="cat-card cat-4">
+        <div class="cat-text"><h3>Эд анги</h3><p>500+ нэр төрөл</p></div>
+      </a>
+      <a href="products.html?cat=accessories" class="cat-card cat-5">
+        <div class="cat-text"><h3>Дагалдах</h3><p>320+ нэр төрөл</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured products -->
+<section class="section" id="featured">
+  <div class="container">
+    <div class="section-head">
+      <h2>Онцлох бүтээгдэхүүн</h2>
+      <div class="tabs">
+        <button class="tab active" data-filter="all">Бүгд</button>
+        <button class="tab" data-filter="laptop">Notebook</button>
+        <button class="tab" data-filter="gaming">Гэйминг</button>
+        <button class="tab" data-filter="desktop">Суурин</button>
+      </div>
+    </div>
+    <div class="product-grid" id="featuredGrid"></div>
+  </div>
+</section>
+
+<!-- Promo banner -->
+<section class="promo">
+  <div class="container promo-inner">
+    <div class="promo-text">
+      <span class="eyebrow light">Хуваан төлөх боломжтой</span>
+      <h2>Бэлнээр аваад<br>илүү хямд.</h2>
+      <p>Simple, Sono, PayOn, Lendmn — таны сонгосон хуваан төлөх хэрэгслээр хүссэн notebook-оо одооо аваарай.</p>
+      <a href="tel:80012722" class="btn btn-light">📞 8001-2722</a>
+    </div>
+    <div class="promo-image">
+      <img src="images/products/post2_img1.jpg" alt="Dell Latitude">
+    </div>
+  </div>
+</section>
+
+<!-- Best sellers -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Хамгийн их зарагдсан</h2>
+      <a href="products.html?sort=top" class="see-all">Бүгдийг үзэх →</a>
+    </div>
+    <div class="product-grid" id="bestGrid"></div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+  <div class="container features-grid">
+    <div class="feature">
+      <div class="feature-icon">💰</div>
+      <h4>Хямд үнэ</h4>
+      <p>Америкаас шууд импорт</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🛡️</div>
+      <h4>Чанарын баталгаа</h4>
+      <p>Албан ёсны борлуулагч</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🚚</div>
+      <h4>Хүргэлттэй</h4>
+      <p>УБ хотод 24 цагт</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🤝</div>
+      <h4>Итгэлтэй үйлчилгээ</h4>
+      <p>Захиалгаар авч ирнэ</p>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter">
+  <div class="container newsletter-inner">
+    <div>
+      <h2>Шинэ загвар, хямдралаас битгий хоцор</h2>
+      <p>Долоо хоног бүр имэйлээр мэдээлэл хүргүүлнэ.</p>
+    </div>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Бүртгэгдлээ ✓');">
+      <input type="email" placeholder="Имэйл хаягаа оруулна уу" required>
+      <button class="btn btn-primary">Бүртгүүлэх</button>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <div class="logo">
+        <img src="images/logo.jpg" alt="Orchlon TechSupply" class="logo-img">
+        <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+      </div>
+      <p class="mt-12">Америкаас шууд импортолсон хямд чанартай зөөврийн Notebook болон технологийн бүтээгдэхүүн.</p>
+      <div class="socials">
+        <a href="https://www.facebook.com/orchlontechpage" target="_blank">f</a>
+        <a href="#">in</a><a href="#">yt</a><a href="#">ig</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Бүтээгдэхүүн</h5>
+      <a href="products.html?cat=laptop">Notebook</a>
+      <a href="products.html?cat=desktop">Суурин</a>
+      <a href="products.html?cat=gaming">Гэйминг</a>
+      <a href="products.html?cat=parts">Эд анги</a>
+    </div>
+    <div class="footer-col">
+      <h5>Тусламж</h5>
+      <a href="#">Хүргэлтийн нөхцөл</a>
+      <a href="#">Буцаалт</a>
+      <a href="#">Баталгаат засвар</a>
+      <a href="#">Захиалгаар авч ирэх</a>
+    </div>
+    <div class="footer-col">
+      <h5>Холбоо барих</h5>
+      <p>
+        📞 <a href="tel:80012722">8001-2722</a><br>
+        ✉️ info@orchlontech.mn<br>
+        📍 Улаанбаатар, Монгол улс<br>
+        <a href="https://www.facebook.com/orchlontechpage" target="_blank">facebook.com/orchlontechpage</a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bot">
+    <div class="container">
+      © 2026 Orchlon TechSupply LLC. Бүх эрх хуулиар хамгаалагдсан.
+    </div>
+  </div>
+</footer>
+
+<!-- Floating contact buttons -->
+<div class="float-contacts">
+  <a href="tel:80012722" class="fc-btn fc-phone" title="Утсаар холбогдох">📞</a>
+  <a href="https://m.me/orchlontechpage" target="_blank" class="fc-btn fc-fb" title="Messenger">💬</a>
+</div>
+
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>renderHome();</script>
+</body>
+</html>
