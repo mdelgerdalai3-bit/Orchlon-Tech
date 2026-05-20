@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ — Orchlon TechSupply</title>
+<link rel="icon" href="images/logo.jpg">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  (function() {
+    var t = localStorage.getItem('orchlon_theme')
+      || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  })();
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="Orchlon" class="logo-img">
+      <span class="logo-text">Orchlon<small>ADMIN PANEL</small></span>
+    </a>
+    <div class="header-actions" style="margin-left:auto">
+      <a href="index.html" class="btn btn-ghost">← Сайт руу буцах</a>
+      <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Theme">
+        <span class="sun">☀️</span><span class="moon">🌙</span>
+      </button>
+      <button class="btn btn-ghost" id="logoutBtn" onclick="adminLogout()" style="display:none">Гарах</button>
+    </div>
+  </div>
+</header>
+
+<!-- Login screen -->
+<section class="section" id="loginScreen">
+  <div class="container" style="max-width:420px">
+    <div class="admin-card">
+      <h1 class="page-title" style="font-size:28px;margin-bottom:8px">🔐 Админ нэвтрэх</h1>
+      <p style="color:var(--text-soft); margin-bottom:24px">Энэ хэсэгт зөвхөн дэлгүүрийн админ нэвтэрнэ</p>
+      <form onsubmit="event.preventDefault(); adminLogin();">
+        <label class="form-label">Нууц үг</label>
+        <input type="password" id="adminPwd" class="form-input" placeholder="••••••••" autofocus>
+        <p id="loginErr" style="color:var(--accent); font-size:13px; min-height:18px; margin-top:6px"></p>
+        <button class="btn btn-primary w-full" style="margin-top:10px">Нэвтрэх</button>
+      </form>
+      <p style="font-size:12px; color:var(--text-soft); margin-top:18px; text-align:center">
+        Анхдагч нууц үг: <code>orchlon2026</code><br>
+        (Эхний удаа нэвтэрсний дараа өөрчилнө)
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Admin dashboard -->
+<section class="section" id="adminDashboard" style="display:none">
+  <div class="container">
+
+    <!-- Stats -->
+    <div class="admin-stats">
+      <div class="stat-card">
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">Нийт бүтээгдэхүүн</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statStatic">0</div>
+        <div class="stat-label">Үндсэн (Git)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statLocal">0</div>
+        <div class="stat-label">Нэмсэн (Локал)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statSold">0</div>
+        <div class="stat-label">Сагсанд (одоо)</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="admin-toolbar">
+      <h2>Бүтээгдэхүүний удирдлага</h2>
+      <div class="admin-tools">
+        <button class="btn btn-ghost" onclick="exportProducts()">📥 Эксопортлох</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('importInput').click()">📤 Импортлох</button>
+        <input type="file" id="importInput" accept=".json" style="display:none" onchange="importProducts(this)">
+        <button class="btn btn-ghost" onclick="changePassword()">🔑 Нууц үг солих</button>
+        <button class="btn btn-primary" onclick="showForm()">+ Шинэ бүтээгдэхүүн</button>
+      </div>
+    </div>
+
+    <!-- Product list -->
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Зураг</th>
+            <th>Нэр</th>
+            <th>Брэнд</th>
+            <th>Ангилал</th>
+            <th>Үнэ</th>
+            <th>Нөөц</th>
+            <th>Эх</th>
+            <th>Үйлдэл</th>
+          </tr>
+        </thead>
+        <tbody id="adminTableBody"></tbody>
+      </table>
+    </div>
+
+    <p class="admin-note">
+      💡 <strong>Эх:</strong> "Git" гэдэг нь GitHub дээрх <code>js/products.js</code>-аас орж ирсэн (бүх хүн харна).
+      "Локал" гэдэг нь зөвхөн таны хөтөч дотор хадгалагдсан туршилтын бүтээгдэхүүн (бусдад харагдахгүй).
+      <br>📥 <strong>Эксопортлох:</strong> нэмсэн бүтээгдэхүүнүүдээ products.js файл болгож татна → GitHub-д commit хийвэл бүх хүн харна.
+    </p>
+  </div>
+</section>
+
+<!-- Form modal -->
+<div class="modal-backdrop" id="formModal" onclick="if(event.target===this) hideForm()">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="formTitle">Шинэ бүтээгдэхүүн нэмэх</h3>
+      <button class="drawer-close" onclick="hideForm()">✕</button>
+    </div>
+    <form class="modal-body" onsubmit="event.preventDefault(); saveProduct();">
+      <input type="hidden" id="fId">
+
+      <div class="form-row">
+        <div class="form-col">
+          <label class="form-label">Бүтээгдэхүүний нэр *</label>
+          <input type="text" id="fName" class="form-input" required placeholder="Dell Latitude 7520 vPRO">
+        </div>
+        <div class="form-col">
+          <label class="form-label">Брэнд *</label>
+          <input type="text" id="fBrand" class="form-input" required placeholder="Dell" list="brandList">
+          <datalist id="brandList">
+            <option value="Apple"><option value="Dell"><option value="HP">
+            <option value="Lenovo"><option value="ASUS"><option value="MSI">
+            <option value="Acer"><option value="Razer"><option value="Samsung">
+          </datalist>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <label class="form-label">Ангилал *</label>
+          <select id="fCat" class="form-input" required>
+            <option value="laptop">💻 Notebook</option>
+            <option value="gaming">🎮 Гэйминг</option>
+            <option value="desktop">🖥️ Суурин</option>
+            <option value="parts">🔩 Эд анги</option>
+            <option value="accessories">⌨️ Дагалдах</option>
+          </select>
+        </div>
+        <div class="form-col">
+          <label class="form-label">Нөөц (ширхэг)</label>
+          <input type="number" id="fStock" class="form-input" value="1" min="0">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <label class="form-label">Үнэ (₮)</label>
+          <input type="number" id="fPrice" class="form-input" placeholder="1700000 (хоосон=Лавлах)">
+        </div>
+        <div class="form-col">
+          <label class="form-label">Хуучин үнэ (₮) — нэмэлт</label>
+          <input type="number" id="fOldPrice" class="form-input" placeholder="1938000">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <label class="form-label">Процессор</label>
+          <input type="text" id="fCpu" class="form-input" placeholder="Intel Core i7 11-р үе">
+        </div>
+        <div class="form-col">
+          <label class="form-label">RAM (GB)</label>
+          <input type="number" id="fRam" class="form-input" placeholder="16">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <label class="form-label">Хадгалалт</label>
+          <input type="text" id="fStorage" class="form-input" placeholder="512GB SSD">
+        </div>
+        <div class="form-col">
+          <label class="form-label">График</label>
+          <input type="text" id="fGpu" class="form-input" placeholder="Intel Iris Xe">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <label class="form-label">Дэлгэц</label>
+          <input type="text" id="fScreen" class="form-input" placeholder="15.6 inch FHD">
+        </div>
+        <div class="form-col">
+          <label class="form-label">Жин</label>
+          <input type="text" id="fWeight" class="form-input" placeholder="1.65 кг">
+        </div>
+      </div>
+
+      <label class="form-label">Зурагнууд</label>
+      <div class="image-uploader">
+        <div class="image-tabs">
+          <button type="button" class="image-tab active" onclick="switchImageTab('url')">🔗 URL-аар</button>
+          <button type="button" class="image-tab" onclick="switchImageTab('file')">📁 Файл оруулах</button>
+        </div>
+        <div id="imageTabUrl">
+          <input type="text" id="fImgUrl" class="form-input" placeholder="https://… (Enter дарж нэмнэ)" onkeydown="if(event.key==='Enter'){event.preventDefault(); addImageUrl();}">
+          <button type="button" class="btn btn-ghost btn-sm" onclick="addImageUrl()">+ URL нэмэх</button>
+        </div>
+        <div id="imageTabFile" style="display:none">
+          <input type="file" id="fImgFile" accept="image/*" multiple class="form-input" onchange="addImageFiles(this)">
+          <small style="color:var(--text-soft)">Олон файлыг сонгож болно (Ctrl/Cmd + click)</small>
+        </div>
+        <div class="image-previews" id="imagePreviews"></div>
+      </div>
+
+      <label class="form-label">Тайлбар</label>
+      <textarea id="fDesc" class="form-input" rows="4" placeholder="Бүтээгдэхүүний тайлбар…"></textarea>
+
+      <div class="form-row" style="margin-top:14px">
+        <div class="form-col">
+          <label class="form-label">Энгэрийн тэмдэг (badge)</label>
+          <input type="text" id="fBadge" class="form-input" placeholder="−10%, Шинэ, Hot…">
+        </div>
+        <div class="form-col">
+          <label class="form-label">Badge төрөл</label>
+          <select id="fBadgeType" class="form-input">
+            <option value="">— Сонгоогүй —</option>
+            <option value="sale">Хямдрал (улаан)</option>
+            <option value="new">Шинэ (ногоон)</option>
+            <option value="hot">Hot (шар)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:14px">
+        <label class="form-check">
+          <input type="checkbox" id="fFeatured"> ⭐ Онцлох (нүүр хуудсанд)
+        </label>
+        <label class="form-check">
+          <input type="checkbox" id="fTop"> 🔥 Шилдэг борлуулалт
+        </label>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="hideForm()">Цуцлах</button>
+        <button type="submit" class="btn btn-primary">💾 Хадгалах</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/products.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/main.js"></script>
+<script src="js/admin.js"></script>
+<script>initAdmin();</script>
+</body>
+</html>

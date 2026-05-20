@@ -1,3 +1,11 @@
+// Supabase-аас getAllProducts() нь js/supabase.js дотроос ачаалагдана.
+// Хэрэв supabase.js файл ачаалагдахгүй бол fallback хийнэ:
+if (typeof getAllProducts !== 'function') {
+  window.getAllProducts = async function() {
+    return (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
+  };
+}
+
 // ===== Theme (dark/light) =====
 const THEME_KEY = 'orchlon_theme';
 function getTheme() {
@@ -64,6 +72,14 @@ function updateQty(productId, qty) {
   }
 }
 
+// ===== Loading / Empty placeholders =====
+function loadingHTML() {
+  return '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-soft);font-size:14px">⏳ Ачаалж байна…</div>';
+}
+function emptyHTML(msg) {
+  return `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-soft)">${msg}</div>`;
+}
+
 // ===== Toast =====
 function toast(msg) {
   let t = document.getElementById('toast');
@@ -121,12 +137,17 @@ function cardHTML(p) {
 }
 
 // ===== Home: featured + best =====
-function renderHome() {
+async function renderHome() {
   updateCartCount();
-  const featured = PRODUCTS.filter(p => p.featured).slice(0, 8);
-  const best = PRODUCTS.filter(p => p.top).slice(0, 4);
-  document.getElementById('featuredGrid').innerHTML = featured.map(cardHTML).join('');
-  document.getElementById('bestGrid').innerHTML = best.map(cardHTML).join('');
+  const fg = document.getElementById('featuredGrid');
+  const bg = document.getElementById('bestGrid');
+  if (fg) fg.innerHTML = loadingHTML();
+  if (bg) bg.innerHTML = loadingHTML();
+  const all = await getAllProducts();
+  const featured = all.filter(p => p.featured).slice(0, 8);
+  const best = all.filter(p => p.top).slice(0, 4);
+  if (fg) fg.innerHTML = featured.length ? featured.map(cardHTML).join('') : emptyHTML('Онцлох бүтээгдэхүүн алга');
+  if (bg) bg.innerHTML = best.length ? best.map(cardHTML).join('') : emptyHTML('Шилдэг борлуулалт алга');
 
   // Tab filter
   document.querySelectorAll('.tab').forEach(tab => {
@@ -137,7 +158,7 @@ function renderHome() {
       const filtered = f === 'all' ? featured : featured.filter(p => p.cat === f);
       document.getElementById('featuredGrid').innerHTML = filtered.length
         ? filtered.map(cardHTML).join('')
-        : '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-soft)">Бүтээгдэхүүн олдсонгүй</p>';
+        : emptyHTML('Бүтээгдэхүүн олдсонгүй');
     });
   });
 
@@ -162,7 +183,7 @@ const CAT_NAMES = {
   accessories: 'Дагалдах хэрэгсэл'
 };
 
-function initListing() {
+async function initListing() {
   updateCartCount();
 
   const params = new URLSearchParams(location.search);
@@ -178,6 +199,9 @@ function initListing() {
   if (radio) radio.checked = true;
   if (sortParam === 'top') document.getElementById('sortBy').value = 'rating';
 
+  document.getElementById('listingGrid').innerHTML = loadingHTML();
+  const allProducts = await getAllProducts();
+
   function applyFilters() {
     const cat = document.querySelector('input[name="cat"]:checked').value;
     const brands = [...document.querySelectorAll('.brand:checked')].map(b => b.value);
@@ -186,18 +210,18 @@ function initListing() {
     const maxP = +document.getElementById('maxPrice').value || Infinity;
     const sort = document.getElementById('sortBy').value;
 
-    let list = PRODUCTS.filter(p => {
+    let list = allProducts.filter(p => {
       if (cat !== 'all' && p.cat !== cat) return false;
       if (brands.length && !brands.includes(p.brand)) return false;
       if (rams.length && !rams.includes(p.specs.ram)) return false;
-      if (p.price < minP || p.price > maxP) return false;
+      if (p.price != null && (p.price < minP || p.price > maxP)) return false;
       if (query && !(p.name + ' ' + p.brand).toLowerCase().includes(query)) return false;
       return true;
     });
 
     switch (sort) {
-      case 'price-asc': list.sort((a,b) => a.price - b.price); break;
-      case 'price-desc': list.sort((a,b) => b.price - a.price); break;
+      case 'price-asc': list.sort((a,b) => (a.price||0) - (b.price||0)); break;
+      case 'price-desc': list.sort((a,b) => (b.price||0) - (a.price||0)); break;
       case 'rating': list.sort((a,b) => b.rating - a.rating); break;
       case 'new': list.sort((a,b) => (b.badgeType === 'new') - (a.badgeType === 'new')); break;
       default: list.sort((a,b) => b.reviews - a.reviews);
@@ -206,7 +230,7 @@ function initListing() {
     document.getElementById('resultCount').textContent = `${list.length} бүтээгдэхүүн`;
     document.getElementById('listingGrid').innerHTML = list.length
       ? list.map(cardHTML).join('')
-      : '<p style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-soft)">Шүүлтэд тохирох бүтээгдэхүүн олдсонгүй</p>';
+      : emptyHTML('Шүүлтэд тохирох бүтээгдэхүүн олдсонгүй');
   }
 
   // Bind all filter changes
@@ -247,10 +271,13 @@ function initListing() {
 }
 
 // ===== Product detail =====
-function renderProductDetail() {
+async function renderProductDetail() {
   updateCartCount();
   const id = +new URLSearchParams(location.search).get('id') || 1;
-  const p = PRODUCTS.find(x => x.id === id) || PRODUCTS[0];
+  document.getElementById('pdpRoot').innerHTML = loadingHTML();
+  const all = await getAllProducts();
+  const p = all.find(x => x.id === id) || all[0];
+  if (!p) { document.getElementById('pdpRoot').innerHTML = emptyHTML('Бүтээгдэхүүн олдсонгүй'); return; }
 
   document.title = p.name + ' — TechMall';
   document.getElementById('crumbCat').textContent = CAT_NAMES[p.cat] || 'Бүтээгдэхүүн';
@@ -327,12 +354,12 @@ function renderProductDetail() {
   `;
 
   // Related
-  const related = PRODUCTS.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4);
+  const related = all.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4);
   document.getElementById('relatedGrid').innerHTML = related.map(cardHTML).join('');
 }
 
 // ===== Cart page =====
-function renderCart() {
+async function renderCart() {
   updateCartCount();
   const cart = getCart();
   const itemsRoot = document.getElementById('cartItems');
@@ -350,8 +377,11 @@ function renderCart() {
     return;
   }
 
+  itemsRoot.innerHTML = loadingHTML();
+  const allProducts = await getAllProducts();
+
   itemsRoot.innerHTML = cart.map(item => {
-    const p = PRODUCTS.find(x => x.id === item.id);
+    const p = allProducts.find(x => x.id === item.id);
     if (!p) return '';
     return `
       <div class="cart-item">
@@ -374,8 +404,8 @@ function renderCart() {
   }).join('');
 
   const subtotal = cart.reduce((s, i) => {
-    const p = PRODUCTS.find(x => x.id === i.id);
-    return s + (p ? p.price * i.qty : 0);
+    const p = allProducts.find(x => x.id === i.id);
+    return s + (p && p.price ? p.price * i.qty : 0);
   }, 0);
   const tax = Math.round(subtotal * 0.1);
   const total = subtotal + tax;
