@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бүтээгдэхүүн — Orchlon TechSupply</title>
+<link rel="icon" href="images/logo.jpg">
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  (function() {
+    var t = localStorage.getItem('orchlon_theme')
+      || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  })();
+</script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <span>🇺🇸 Америкаас шууд хямд, чанартай зөөврийн Notebook</span>
+    <div class="topbar-links">
+      <a href="tel:80012722">📞 8001-2722</a>
+      <a href="https://www.facebook.com/orchlontechpage" target="_blank">Facebook</a>
+      <a href="#">Тусламж</a>
+    </div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container header-inner">
+    <button class="hamburger" onclick="toggleDrawer(true)" aria-label="Цэс">☰</button>
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="Orchlon TechSupply" class="logo-img">
+      <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="products.html?cat=laptop">Notebook</a>
+      <a href="products.html?cat=gaming">Гэйминг</a>
+      <a href="products.html?cat=desktop">Суурин</a>
+      <a href="products.html?cat=parts">Эд анги</a>
+      <a href="products.html?cat=accessories">Дагалдах</a>
+      <a href="products.html">Бүх бүтээгдэхүүн</a>
+    </nav>
+    <div class="header-actions">
+      <form class="search" onsubmit="event.preventDefault(); doSearch(this.querySelector('input').value)">
+        <input type="text" id="searchInput" placeholder="Хайх…">
+        <button type="submit">🔍</button>
+      </form>
+      <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Theme">
+        <span class="sun">☀️</span><span class="moon">🌙</span>
+      </button>
+      <a href="cart.html" class="icon-btn cart-btn">🛒 <span class="cart-count" id="cartCount">0</span></a>
+      <a href="tel:80012722" class="btn btn-ghost">📞 8001-2722</a>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="Orchlon" class="logo-img">
+      <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+    </a>
+    <button class="drawer-close" onclick="toggleDrawer(false)">✕</button>
+  </div>
+  <div class="drawer-search">
+    <div class="search">
+      <input type="text" id="searchInputMobile" placeholder="Хайх…">
+      <button>🔍</button>
+    </div>
+  </div>
+  <nav class="drawer-nav">
+    <a href="products.html?cat=laptop">💻 Notebook</a>
+    <a href="products.html?cat=gaming">🎮 Гэйминг</a>
+    <a href="products.html?cat=desktop">🖥️ Суурин</a>
+    <a href="products.html?cat=parts">🔩 Эд анги</a>
+    <a href="products.html?cat=accessories">⌨️ Дагалдах</a>
+    <a href="products.html">📋 Бүх бүтээгдэхүүн</a>
+    <a href="cart.html">🛒 Сагс</a>
+  </nav>
+  <div class="drawer-foot">
+    <a href="tel:80012722">📞 8001-2722</a>
+    <a href="https://www.facebook.com/orchlontechpage" target="_blank">📘 Facebook</a>
+  </div>
+</aside>
+
+<div class="crumbs">
+  <div class="container">
+    <a href="index.html">Нүүр</a> / <a href="products.html" id="crumbCat">Бүтээгдэхүүн</a> / <span id="crumbName">…</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="pdp-grid" id="pdpRoot"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head"><h2>Танд таалагдаж магадгүй</h2></div>
+    <div class="product-grid" id="relatedGrid"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <div class="logo">
+        <img src="images/logo.jpg" alt="Orchlon TechSupply" class="logo-img">
+        <span class="logo-text">Orchlon<small>TechSupply LLC</small></span>
+      </div>
+      <p class="mt-12">Америкаас шууд импортолсон хямд чанартай Notebook.</p>
+    </div>
+    <div class="footer-col"><h5>Бүтээгдэхүүн</h5>
+      <a href="products.html?cat=laptop">Notebook</a>
+      <a href="products.html?cat=gaming">Гэйминг</a>
+    </div>
+    <div class="footer-col"><h5>Үйлчилгээ</h5>
+      <a href="tel:80012722">📞 8001-2722</a>
+      <a href="https://www.facebook.com/orchlontechpage" target="_blank">💬 Facebook</a>
+    </div>
+    <div class="footer-col"><h5>Холбоо</h5>
+      <p>📞 <a href="tel:80012722">8001-2722</a><br>
+      📍 Улаанбаатар, Монгол</p>
+    </div>
+  </div>
+  <div class="footer-bot"><div class="container">© 2026 Orchlon TechSupply LLC. · <a href="admin.html" style="opacity:.6">Админ</a></div></div>
+</footer>
+
+<div class="float-contacts">
+  <a href="tel:80012722" class="fc-btn fc-phone">📞</a>
+  <a href="https://m.me/orchlontechpage" target="_blank" class="fc-btn fc-fb">💬</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/products.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/main.js"></script>
+<script>renderProductDetail();</script>
+</body>
+</html>
