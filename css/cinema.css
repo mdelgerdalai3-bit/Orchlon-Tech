@@ -1,0 +1,209 @@
+/* =====================================================================
+   CINEMA LAYER — Orchlon TechSupply
+   Premium "cinematic" polish layered ON TOP of style.css.
+   100% additive: removing this file restores the original site.
+   ===================================================================== */
+
+/* ---- Cinematic color tokens (theme-aware) ---- */
+:root {
+  --cine-glow-1: rgba(214, 40, 106, 0.35);   /* primary pink */
+  --cine-glow-2: rgba(42, 37, 128, 0.35);    /* deep indigo  */
+  --cine-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --cine-reveal-y: 28px;
+}
+[data-theme="dark"] {
+  --cine-glow-1: rgba(214, 40, 106, 0.45);
+  --cine-glow-2: rgba(80, 70, 220, 0.40);
+}
+
+/* Lenis owns scrolling — let it run the show */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* =====================================================================
+   1. SCROLL PROGRESS BAR (top of viewport)
+   ===================================================================== */
+.cine-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  z-index: 200;
+  background: linear-gradient(90deg, #d6286a, #7b5cff, #2a2580);
+  box-shadow: 0 0 12px var(--cine-glow-1);
+  transition: width 0.08s linear;
+  pointer-events: none;
+}
+
+/* =====================================================================
+   2. SCROLL REVEAL
+   Elements get .reveal (hidden) then .in (shown) as they enter view.
+   ===================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--cine-reveal-y), 0);
+  transition:
+    opacity 0.7s var(--cine-ease),
+    transform 0.7s var(--cine-ease);
+  will-change: opacity, transform;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* =====================================================================
+   3. AMBIENT GLOW — hero + promo + newsletter
+   Soft animated light blobs behind key sections.
+   ===================================================================== */
+.hero { position: relative; isolation: isolate; }
+.hero::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -20%; right: -10%;
+  width: 60vw; height: 60vw;
+  max-width: 760px; max-height: 760px;
+  background:
+    radial-gradient(circle at 30% 30%, var(--cine-glow-1), transparent 60%),
+    radial-gradient(circle at 70% 70%, var(--cine-glow-2), transparent 60%);
+  filter: blur(40px);
+  opacity: 0.65;
+  pointer-events: none;
+  animation: cineFloat 14s ease-in-out infinite alternate;
+}
+@keyframes cineFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-4%, 5%) scale(1.12); }
+}
+
+.promo { position: relative; overflow: hidden; }
+.promo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(214,40,106,0.35), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(80,70,220,0.30), transparent 45%);
+  pointer-events: none;
+  animation: cinePulse 9s ease-in-out infinite alternate;
+}
+@keyframes cinePulse {
+  0%   { opacity: 0.55; }
+  100% { opacity: 1; }
+}
+
+/* =====================================================================
+   4. GRADIENT / SHIMMER HEADINGS (on dark or colored backgrounds)
+   ===================================================================== */
+.promo-text h2,
+.newsletter h2 {
+  background: linear-gradient(100deg, #ffffff 0%, #ffd9e8 35%, #c9c2ff 70%, #ffffff 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: cineShimmer 7s linear infinite;
+}
+@keyframes cineShimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 220% 50%; }
+}
+
+/* Section heading: animated underline accent */
+.section-head h2 { position: relative; }
+.section-head h2::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -8px;
+  height: 3px; width: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+  transition: width 0.8s var(--cine-ease) 0.15s;
+}
+.section-head.in h2::after,
+.section-head h2.in::after { width: 64px; }
+
+/* =====================================================================
+   5. 3D TILT — product & hero cards lift toward the cursor
+   ===================================================================== */
+.product-card,
+.hero-card {
+  transform-style: preserve-3d;
+  transition:
+    transform 0.25s var(--cine-ease),
+    box-shadow 0.25s var(--cine-ease),
+    border-color 0.2s;
+}
+.product-card.tilting,
+.hero-card.tilting { transition: box-shadow 0.25s var(--cine-ease); }
+.product-card.tilting { box-shadow: 0 18px 50px rgba(0,0,0,0.18); }
+[data-theme="dark"] .product-card.tilting { box-shadow: 0 18px 50px rgba(0,0,0,0.55); }
+.hero-card.tilting { box-shadow: 0 24px 60px rgba(0,0,0,0.22); }
+
+/* glossy sheen sweep across the product image on hover */
+.product-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.28) 48%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--cine-ease);
+  pointer-events: none;
+  z-index: 1;
+}
+.product-card:hover .product-img::after { transform: translateX(120%); }
+
+/* =====================================================================
+   6. BUTTON SHEEN
+   ===================================================================== */
+.btn-primary, .btn-light {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after, .btn-light::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--cine-ease);
+}
+.btn-primary:hover::after, .btn-light:hover::after { left: 130%; }
+
+/* =====================================================================
+   7. CINEMATIC SCROLLBAR
+   ===================================================================== */
+.cine-on::-webkit-scrollbar { width: 10px; }
+.cine-on::-webkit-scrollbar-track { background: transparent; }
+.cine-on::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #d6286a, #2a2580);
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+}
+
+/* =====================================================================
+   8. NAV LINK underline grow
+   ===================================================================== */
+.main-nav a { position: relative; }
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -4px;
+  height: 2px; width: 0;
+  background: var(--primary);
+  transition: width 0.25s var(--cine-ease);
+}
+.main-nav a:hover::after { width: 100%; }
+
+/* =====================================================================
+   9. REDUCED MOTION — turn the cinema off for users who ask
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .hero::before, .promo::after,
+  .promo-text h2, .newsletter h2,
+  .product-img::after, .btn-primary::after, .btn-light::after { animation: none; }
+}
